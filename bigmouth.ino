@@ -1,4 +1,5 @@
 #include "fish.h"
+#include "loudness.h"
 #include <Adafruit_VS1053.h>
 #include <SD.h>
 #include <avr/sleep.h>
@@ -17,17 +18,21 @@ void setup() {
   // musicPlayer.startPlayingFile("/track001.mp3"); // (full length version)
   musicPlayer.startPlayingFile("/track002.mp3"); // (10 second version for testing)
 
-  while (!musicPlayer.stopped()) {
-    fish.head();
-    delay(1000);
-    fish.tail();
-    delay(1000);
-    fish.rest();
-    delay(1000);
-    fish.setMouth(1);
-    delay(1000);
-    fish.setMouth(0);
-    delay(1000);
+  for (byte k = 0; k < strlen_P(loudness); k++) {
+    uint8_t ampl = pgm_read_byte_near(loudness + k);
+    if (ampl > 128) {
+      fish.setMouth(1);
+    } else {
+      fish.setMouth(0);
+    }
+    if (ampl > 196) {
+      fish.head();
+    } else if (ampl > 64) {
+      fish.tail();
+    } else {
+      fish.rest();
+    }
+    delay(10);
   }
 
   sleep_enable();
