@@ -18,22 +18,7 @@ void setup() {
   // musicPlayer.startPlayingFile("/track001.mp3"); // (full length version)
   musicPlayer.startPlayingFile("/track002.mp3"); // (10 second version for testing)
 
-  for (byte k = 0; k < strlen_P(loudness); k++) {
-    uint8_t ampl = pgm_read_byte_near(loudness + k);
-    if (ampl > 128) {
-      fish.setMouth(1);
-    } else {
-      fish.setMouth(0);
-    }
-    if (ampl > 196) {
-      fish.head();
-    } else if (ampl > 64) {
-      fish.tail();
-    } else {
-      fish.rest();
-    }
-    delay(10);
-  }
+  routine();
 
   sleep_enable();
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);

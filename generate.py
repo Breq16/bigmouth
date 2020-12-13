@@ -18,4 +18,9 @@ for timestamp, action in actions.items():
     code.append(f"  delay({millis});")
     code.append(action_lines[action])
 
-print("\n".join(code))
+generated = "\n".join(code)
+
+with open("routine.ino", "w") as file:
+    file.write("void routine() {\n")
+    file.write(generated)
+    file.write("\n}\n")
