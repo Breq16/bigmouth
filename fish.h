@@ -10,6 +10,7 @@ class Fish {
     void tail();
     void rest();
     void setMouth(int state);
+    void sleep();
   private:
     Adafruit_MotorShield AFMS;
     Adafruit_DCMotor *bodyMotor;

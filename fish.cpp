@@ -34,3 +34,8 @@ void Fish::setMouth(int state) {
     mouthMotor->run(RELEASE);
   }
 }
+
+void Fish::sleep() {
+  bodyMotor->run(RELEASE);
+  mouthMotor->run(RELEASE);
+}
