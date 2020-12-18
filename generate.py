@@ -13,9 +13,12 @@ action_lines = {
     "mouthClosed": "  fish.setMouth(0);"
 }
 
+total_ts = 0
+
 for timestamp, action in actions.items():
-    millis = int(float(timestamp)*1000)
-    code.append(f"  delay({millis});")
+    total_ts += float(timestamp)
+    millis = int(float(total_ts)*1000)
+    code.append(f"  delayUntil({millis});")
     code.append(action_lines[action])
 
 generated = "\n".join(code)

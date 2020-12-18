@@ -7,16 +7,26 @@ Fish fish;
 
 Adafruit_VS1053_FilePlayer musicPlayer(-1, 7, 6, 3, 4);
 
+void delayUntil(uint32_t target_millis) {
+  handleVolume();
+  while (millis() < target_millis) {
+    delayUntil(1);
+  }
+}
+
+void handleVolume() {
+  // volume: 0x00 maximum, 0xFE minimum
+  uint16_t volume_dial = analogRead(A0);
+  uint8_t volume_byte = 64 - map(volume_dial, 0, 1024, 1, 63);
+  musicPlayer.setVolume(volume_byte, volume_byte);
+}
+
 void setup() {
   fish.begin();
 
   musicPlayer.begin();
   SD.begin(4);
 
-  // volume: 0x00 maximum, 0xFE minimum
-  uint16_t volume_dial = analogRead(A0);
-  uint8_t volume_byte = 256 - map(volume_dial, 0, 1024, 1, 255);
-  musicPlayer.setVolume(volume_byte, volume_byte);
   musicPlayer.useInterrupt(VS1053_FILEPLAYER_PIN_INT);
   musicPlayer.startPlayingFile("/track001.mp3"); // (full length version)
   // musicPlayer.startPlayingFile("/track002.mp3"); // (10 second version for testing)
